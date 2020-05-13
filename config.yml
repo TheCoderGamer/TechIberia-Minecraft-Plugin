@@ -1,0 +1,67 @@
+# ---------------------- CONFIGURACION DE PLUGIN TECHIBERIA ----------------------
+# Creado por Nachogamer1000
+# 
+# mensaje-bienvenida -> mostrar o no el mensaje de bienvenida al unirse al servidor
+# mensaje-bienvenida-texto -> texto entre "" que se mostrara al unirse al servidor. Acepta codigo colores [%player% -> nombre del jugador]
+#
+# shulkerRespawn -> Activar el respawneo de shulkers
+# shulkerRespawnRate -> Velocidad con la que aparecen shulkers (0-10, Por defecto 7)
+# bloquesRespawneo -> Lista de bloques en los que puede respawnear un shulker
+#
+# OPplayers -> Lista en la que estan los jugadores con permisos especiales
+# donadoresPlayers -> Lista en la que estan los donadores
+#
+config:
+    mensaje-bienvenida: true
+    mensaje-bienvenida-texto: "&7&lHola &6&l%player%, &7&lbienvenido a &4&lTechIberia"
+    mensaje-bienvenida-texto-OP: "&7&lHola &c&l%player%, &7&lbienvenido a &4&lTechIberia"
+    mensaje-bienvenida-texto-donador: "&7&lHola &b&l%player%, &7&lbienvenido a &4&lTechIberia"
+    
+    mecanicas:
+        shulkerRespawn: true
+        shulkerRespawnRate: 7
+        bloquesRespawneo:
+        - END_STONE_BRICKS
+        - PURPUR_BLOCK
+        - PURPUR_SLAB
+        - PURPUR_PILLAR
+        - PURPUR_STAIRS
+        
+OPplayers:
+    - Nachogamer1000
+    - Misk0_Jones
+    
+donadoresPlayers:
+    - Saawel
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

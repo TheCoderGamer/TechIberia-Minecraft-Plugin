@@ -1,0 +1,20 @@
+main: nacho.nachoplugin.main
+version: 1.0
+name: TechIberia
+
+commands:
+   web:
+      description: El comando que muestra la pagina web
+      usage: /web
+
+   discord:
+      description: El comando que muestra el discord oficial
+      usage: /discord
+
+   tech:
+      description: Comando principal del plugin
+      usage: /tech <help/reload/info>
+   rango:
+      description: Comando para rangos
+      usage: /rango <set/remove/list>
+

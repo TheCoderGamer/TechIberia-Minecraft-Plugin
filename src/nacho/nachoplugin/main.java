@@ -1,10 +1,13 @@
 package nacho.nachoplugin;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
 // Clases
 import nacho.nachoplugin.comandos.comandoDiscord;
 import nacho.nachoplugin.comandos.comandoPrincipal;
@@ -12,6 +15,7 @@ import nacho.nachoplugin.comandos.comandoRango;
 import nacho.nachoplugin.comandos.comandoWeb;
 import nacho.nachoplugin.eventos.chat;
 import nacho.nachoplugin.eventos.entrar;
+import nacho.nachoplugin.eventos.scoreboardAdmin;
 import nacho.nachoplugin.mecanicas.shulkerRespawn;
 
 
@@ -27,8 +31,19 @@ public class main extends JavaPlugin{
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "<----------------------------->");
 		registrarComandos();
 		registrarEventos();
-		//registrarConfig();
-		this.saveDefaultConfig();
+		registrarConfig();
+		
+		// Arregla permisos OP
+		List<String> OPPlayers = (ArrayList<String>) getConfig().getStringList("OPplayers");
+		getConfig().set("OPplayers",OPPlayers);
+		
+		scoreboardAdmin scoreboard = new scoreboardAdmin(this);
+		scoreboard.crearScoreboard(Integer.valueOf(getConfig().getInt("Scoreboard.ticks")));
+		
+		// Scoreboard
+		/*if(getConfig().getBoolean("Scoreboard.active") == true) {
+			
+		}*/
 	}
 	
 	public void onDisable() {
@@ -58,5 +73,6 @@ public class main extends JavaPlugin{
 			saveConfig();
 		}
 	}
+	
 	
 }

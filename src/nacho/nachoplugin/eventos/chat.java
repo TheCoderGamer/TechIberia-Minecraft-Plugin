@@ -16,6 +16,7 @@ public class chat implements Listener{
 			
 	boolean playerIsOP;
 	boolean playerIsDonador;
+	boolean playerIsMiembro;
 	
 	// Esto sirve para importar variables de otra clase
 			private main plugin;
@@ -49,6 +50,13 @@ public class chat implements Listener{
 		}else {
 			playerIsDonador = false;
 		}
+		// Comprobar si es miembro
+		List<String> miembrosPlayers = (ArrayList<String>) config.getStringList("miembrosPlayers");
+		if(miembrosPlayers.contains(nombreJugador)) {
+			playerIsMiembro = true;
+		}else {
+			playerIsMiembro = false;
+		}
 		
 		
 		if (playerIsOP == true) {
@@ -59,12 +67,14 @@ public class chat implements Listener{
 			event.setMessage(message);
 			event.setFormat(ChatColor.AQUA + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
 		}
+		else if (playerIsMiembro) {
+			event.setMessage(message);
+			event.setFormat(ChatColor.GREEN + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
+		}
 		else {
 			event.setMessage(message);
 			event.setFormat(ChatColor.GRAY + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
-		}
-		
-		
+		}		
 	}
 }
 

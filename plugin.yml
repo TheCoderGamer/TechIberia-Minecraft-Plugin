@@ -1,5 +1,5 @@
 main: nacho.nachoplugin.main
-version: 1.0
+version: 1.2
 name: TechIberia
 
 commands:
@@ -16,5 +16,5 @@ commands:
       usage: /tech <help/reload/info>
    rango:
       description: Comando para rangos
-      usage: /rango <set/remove/list>
+      usage: /rango <set/remove/list> <jugador>
 

@@ -13,7 +13,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-
 import nacho.nachoplugin.main;
 
 public class comandoPrincipal implements CommandExecutor,TabExecutor{
@@ -28,26 +27,86 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command comando, String label, String[] args) {
-		// Si la consola pone un comando
-		if(!(sender instanceof Player)) {	//Si se ejecuta desde la consola
-			Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + plugin.nombre + " Consola no puede ejecutar este comando");
-			return false;
-		}
+		FileConfiguration config = plugin.getConfig();
+		List<String> OPPlayers = (ArrayList<String>) config.getStringList("OPplayers");
+		
 		// Comando reload se puede ejecutar desde la consola
-		else if (!(sender instanceof Player) && args[0].equalsIgnoreCase("reload")) {
+		if (!(sender instanceof Player) && args[0].equalsIgnoreCase("reload")) {
+			
+			
+            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+            Bukkit.getServer().getOnlinePlayers().toArray(players);
+            
+            // Recalcular permisos todos los jugadores online
+            for (int i = 0; i < players.length; i++){
+            	// Server:OP  Plugin:OP  Resultado:OP
+            	if(players[i].isOp() == true && OPPlayers.contains(players[i].getName())) {
+					if (OPPlayers.contains(players[i].getName())) {
+						players[i].setOp(true);					// Server: OP
+					}
+					else {
+						OPPlayers.add(players[i].getName());	// Plugin: OP
+						config.set("OPplayers",OPPlayers );	
+						players[i].setOp(true);					// Server: OP
+					}	
+				}
+            	
+            	// Server:OP  Plugin:NO  Resultado:NO
+            	else if(players[i].isOp() == true && !(OPPlayers.contains(players[i].getName()))) {
+            		if (!(OPPlayers.contains(players[i].getName()))) {
+            			players[i].setOp(false);			    // Server: NO
+            		}
+            		else {
+	            		OPPlayers.remove(players[i].getName());	// Plugin: NO
+						config.set("OPplayers",OPPlayers );
+						players[i].setOp(false);			    // Server: NO
+            		}
+				}
+            	
+            	// Server:NO  Plugin:SI  Resultado:SI
+            	else if(players[i].isOp() == false && OPPlayers.contains(players[i].getName())) {
+            		if (OPPlayers.contains(players[i].getName())) {
+            			players[i].setOp(true);			    	// Server: OP
+            		}
+            		else {
+	            		OPPlayers.add(players[i].getName());	// Plugin: OP
+						config.set("OPplayers",OPPlayers );
+						players[i].setOp(true);			    	// Server: OP
+            		}
+				}
+            	
+            	// Server:NO  Plugin:NO  Resultado:NO
+            	else if(players[i].isOp() == false && !(OPPlayers.contains(players[i].getName()))) {
+            		if (!(OPPlayers.contains(players[i].getName()))) {
+            			players[i].setOp(false);			    // Server: NO
+            		}
+            		else {
+	            		OPPlayers.remove(players[i].getName());	// Plugin: NO
+						config.set("OPplayers",OPPlayers );
+						players[i].setOp(false);			    // Server: NO
+            		}
+				}
+            	else {
+            		Bukkit.getConsoleSender().sendMessage(plugin.nombre + ChatColor.RED + "Error con permisos jugador " + players[i].getName());
+            	}
+			}		
 			plugin.saveConfig();
 			plugin.reloadConfig();
 			Bukkit.getConsoleSender().sendMessage(plugin.nombre + ChatColor.BLUE + "Plugin recargado exitosamente");
 			return true;
 		}
+		// Si la consola pone un comando
+		else if(!(sender instanceof Player)) {
+			Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + plugin.nombre + " Consola no puede ejecutar este comando");
+			return false;
+		}
+		
 		// Si un jugador pone un comando
 		else {
 			Player jugador = (Player) sender;
-			FileConfiguration config = plugin.getConfig();
-			List<String> OPplayers = (ArrayList<String>) config.getStringList("OPplayers");
 			String nombreJugador = jugador.getName();
 			
-			if(OPplayers.contains(nombreJugador)) {
+			if(OPPlayers.contains(nombreJugador)) {
 				playerIsOp = true;
 			}
 			else {
@@ -72,6 +131,64 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 				}
 				// -----------------------------------------------------------------------------------
 				else if (args[0].equalsIgnoreCase("reload") && playerIsOp == true) {
+					
+					Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+		            Bukkit.getServer().getOnlinePlayers().toArray(players);
+					
+					// Recalcular permisos todos los jugadores online
+		            for (int i = 0; i < players.length; i++){
+		            	// Server:OP  Plugin:OP  Resultado:OP
+		            	if(players[i].isOp() == true && OPPlayers.contains(players[i].getName())) {
+							if (OPPlayers.contains(players[i].getName())) {
+								players[i].setOp(true);					// Server: OP
+							}
+							else {
+								OPPlayers.add(players[i].getName());	// Plugin: OP
+								config.set("OPplayers",OPPlayers );	
+								players[i].setOp(true);					// Server: OP
+							}	
+						}
+		            	
+		            	// Server:OP  Plugin:NO  Resultado:NO
+		            	else if(players[i].isOp() == true && !(OPPlayers.contains(players[i].getName()))) {
+		            		if (!(OPPlayers.contains(players[i].getName()))) {
+		            			players[i].setOp(false);			    // Server: NO
+		            		}
+		            		else {
+			            		OPPlayers.remove(players[i].getName());	// Plugin: NO
+								config.set("OPplayers",OPPlayers );
+								players[i].setOp(false);			    // Server: NO
+		            		}
+						}
+		            	
+		            	// Server:NO  Plugin:SI  Resultado:SI
+		            	else if(players[i].isOp() == false && OPPlayers.contains(players[i].getName())) {
+		            		if (OPPlayers.contains(players[i].getName())) {
+		            			players[i].setOp(true);			    	// Server: OP
+		            		}
+		            		else {
+			            		OPPlayers.add(players[i].getName());	// Plugin: OP
+								config.set("OPplayers",OPPlayers );
+								players[i].setOp(true);			    	// Server: OP
+		            		}
+						}
+		            	
+		            	// Server:NO  Plugin:NO  Resultado:NO
+		            	else if(players[i].isOp() == false && !(OPPlayers.contains(players[i].getName()))) {
+		            		if (!(OPPlayers.contains(players[i].getName()))) {
+		            			players[i].setOp(false);			    // Server: NO
+		            		}
+		            		else {
+			            		OPPlayers.remove(players[i].getName());	// Plugin: NO
+								config.set("OPplayers",OPPlayers );
+								players[i].setOp(false);			    // Server: NO
+		            		}
+						}
+		            	else {
+		            		jugador.sendMessage(plugin.nombre + ChatColor.RED + "Error con permisos jugador " + players[i].getName());
+		            	}
+					
+		            }
 					plugin.saveConfig();
 					plugin.reloadConfig();
 					jugador.sendMessage(plugin.nombre + ChatColor.BLUE + "Plugin recargado exitosamente");
@@ -90,10 +207,11 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 					return true;
 				}
 				// -----------------------------------------------------------------------------------
-				if(args[0].equalsIgnoreCase("fakeKill")) {
+				else if(args[0].equalsIgnoreCase("fakeKill") && playerIsOp) {
 					Bukkit.getServer().broadcastMessage(args[1] + " fue asesinado por EnderDragon");
 					return true;
 				}
+				
 				// -----------------------------------------------------------------------------------
 				else {
 					jugador.sendMessage(plugin.nombre + ChatColor.RED + "Ese comando no existe. Usa /tech help");
@@ -125,6 +243,9 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
             arguments1.add("info");
             arguments1.add("version");
             arguments1.add("help");
+            if (sender.isOp() == true) {
+            	arguments1.add("fakekill");
+            }
             return arguments1;
         }   
         return null;

@@ -1,18 +1,20 @@
 package nacho.nachoplugin.mecanicas;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.StructureType;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.EventHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import nacho.nachoplugin.main;
 
@@ -20,16 +22,154 @@ import nacho.nachoplugin.main;
 	    
 		
 		// Esto sirve para importar variables de otra clase
+		int taskID;
+		long ticks;
 		private main plugin;
-		public shulkerRespawn(main plugin) {
+		public shulkerRespawn(main plugin, long ticks) {
 			this.plugin = plugin;
+			this.ticks = ticks;
 			// Esto sirve para registrar el evento
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
 		
+		//private Random random = new Random();
 		
+		
+		public void repetidor() {
+			BukkitScheduler sh = Bukkit.getServer().getScheduler();
+			taskID =  sh.scheduleSyncRepeatingTask(plugin, new Runnable() {
+				
+				@Override
+				public void run() {
+					shulkerRespawner();
+					
+				}
+			}, 0L, ticks);
+		}
+	   
+	
+	
+	
+	private void shulkerRespawner() {
+		//int rand50 = random.nextInt(50);
+		
+		
+			
+		int radius = 100; // Radio de busqueda de EndCity alrededor del jugador
+		int chunkRadius = 5; // Radio de chunks en los que se comprueba si estas cerca de endCity 
+	
+        Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
+        Bukkit.getServer().getOnlinePlayers().toArray(players);
+        for (int i = 0; i < players.length; i++){
+		
+        // Asigna variables
+	    Location location = (players[i].getLocation());
+	    Location structure = (players[i].getWorld().locateNearestStructure(location, StructureType.END_CITY, radius, false));
+	    boolean shulkerActive = false;
+	    
+	    // Comprueba si cerca hay una endCitys
+	    if (structure == null) {
+	    	shulkerActive = false;
+	    	return;
+	    }
+	    else {
+	    	shulkerActive = true;
+	    }
 
-
+	    if (shulkerActive == true) { 
+	    	
+	    	
+	        // Matemagia
+		    if ((Math.abs(structure.getChunk().getX() - location.getChunk().getX()) > chunkRadius))
+		        return;
+		    if ((Math.abs(structure.getChunk().getZ() - location.getChunk().getZ()) > chunkRadius))
+		        return;
+   
+		    // Si llega hasta aqui esque el jugador esta cerca de una endCity (a "chunkRadius" chunks de una endcity) 
+		    List<Location> purpurblocks = obtenerListaBloquesSpawneo(structure.getChunk());
+				
+			Random random = new Random();
+			int rand2 = random.nextInt(10);
+			int cantidadPorTanda = 5;
+			
+			for(int p=0;p<purpurblocks.size(); p++) {
+				//players[i].sendMessage(ChatColor.GREEN + "Posible spawn shulker: X" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());			
+				
+				int rand = random.nextInt(cantidadPorTanda);
+				
+				// 1 entre 10 de que aparezca shulker
+				if(rand == 0) {
+					boolean shulkerCerca = false;
+					List<Entity> entidadesCerca = new ArrayList<Entity>();
+					entidadesCerca = (List<Entity>) structure.getWorld().getNearbyEntities(purpurblocks.get(p), 2, 2, 2);
+					
+					// Comprobar si hay mas entidades cerca
+					if(entidadesCerca.isEmpty() == false) {
+						for(int y = 0; y<entidadesCerca.size();y++){
+							// Comprobar si hay un shulker a 1 bloque a la redonda
+							if(entidadesCerca.get(y).getType() == EntityType.SHULKER){
+								shulkerCerca = true;		
+							}
+						}
+					}
+					if (shulkerCerca == false) {
+						// Spawnear shulkers de poco en poco (de 1 a 10 por tanda)
+						if (rand2 < cantidadPorTanda+1) {
+							// Spawn shulker
+							players[i].getWorld().spawnEntity(purpurblocks.get(p), EntityType.SHULKER);
+							players[i].sendMessage(ChatColor.RED + "Shulker spawn X:" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());
+							rand2 = rand2+1;
+						}
+					}
+					else {
+						//players[i].sendMessage(ChatColor.YELLOW + "Shulker no spawnea");
+					}
+				}
+			}	            
+		}       
+	}	
+}
+	
+	// Obtener una lista con todos los bloques en los que puede spawnear un shulker
+			public static List<Location> obtenerListaBloquesSpawneo(final Chunk chunk) {
+		        List<Location> purpurBlocks = new ArrayList<Location>();
+		        // Comprueba todos los bloques del chunk
+		        final int maxY = chunk.getWorld().getMaxHeight()-1; 
+		        for (int x = 0; x < 16; ++x) {
+		            for (int y = 0; y <= maxY; ++y) {
+		                for (int z = 0; z < 16; ++z) {
+		                	// Comprueba si es del material correcto
+		                	if(chunk.getBlock(x, y, z).getType() == Material.PURPUR_BLOCK) {
+		                		// Comprueba si ya esta el bloque
+		                		if(!(purpurBlocks.contains(chunk.getBlock(x, y, z).getLocation()))) {
+		                			// Comprueba si encima hay un bloque de aire
+		                			if(chunk.getBlock(x, y+1, z).getType() == Material.AIR) {
+		                				// Comprueba si hay 2 bloques de aire en total
+		                				if(chunk.getBlock(x, y+2, z).getType() == Material.AIR) {
+		                					// Añade el bloque de encima del bloque elegido
+			                				purpurBlocks.add(chunk.getBlock(x, y+1, z).getLocation());
+		                				}
+			                		}	
+		                		}	                				
+		                	}
+		                }                
+		            }        
+		        }
+		        return purpurBlocks;
+		    }
+	
+	
+	
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	    private Random random = new Random();
 
 	    @EventHandler
@@ -82,17 +222,7 @@ import nacho.nachoplugin.main;
 		            event.setCancelled(true);
 		    }	    
 	    }
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	 */
 	
 	
 	

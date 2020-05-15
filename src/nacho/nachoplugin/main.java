@@ -1,7 +1,5 @@
 package nacho.nachoplugin;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nacho.nachoplugin.comandos.comandoDiscord;
 import nacho.nachoplugin.comandos.comandoPrincipal;
 import nacho.nachoplugin.comandos.comandoRango;
+import nacho.nachoplugin.comandos.comandoTest;
 import nacho.nachoplugin.comandos.comandoWeb;
 import nacho.nachoplugin.eventos.chat;
 import nacho.nachoplugin.eventos.entrar;
@@ -32,18 +31,13 @@ public class main extends JavaPlugin{
 		registrarComandos();
 		registrarEventos();
 		registrarConfig();
-		
-		// Arregla permisos OP
-		List<String> OPPlayers = (ArrayList<String>) getConfig().getStringList("OPplayers");
-		getConfig().set("OPplayers",OPPlayers);
-		
-		scoreboardAdmin scoreboard = new scoreboardAdmin(this);
-		scoreboard.crearScoreboard(Integer.valueOf(getConfig().getInt("Scoreboard.ticks")));
+		registrarRepeticiones();
 		
 		// Scoreboard
-		/*if(getConfig().getBoolean("Scoreboard.active") == true) {
-			
-		}*/
+		if(getConfig().getBoolean("Scoreboard.active") == true) {
+			scoreboardAdmin scoreboard = new scoreboardAdmin(this);
+			scoreboard.crearScoreboard(Integer.valueOf(getConfig().getInt("Scoreboard.ticks")));
+		}
 	}
 	
 	public void onDisable() {
@@ -57,11 +51,12 @@ public class main extends JavaPlugin{
 		this.getCommand("discord").setExecutor(new comandoDiscord(this));
 		this.getCommand("tech").setExecutor(new comandoPrincipal(this));
 		this.getCommand("rango").setExecutor(new comandoRango(this));
+		this.getCommand("test").setExecutor(new comandoTest(this));
 	}
 	
 	public void registrarEventos() {
 		new entrar(this);
-		new shulkerRespawn(this);
+		//new shulkerRespawn(this);
 		new chat(this);
 	}
 	
@@ -72,6 +67,12 @@ public class main extends JavaPlugin{
 			this.getConfig().options().copyDefaults(true);
 			saveConfig();
 		}
+	}
+	
+	
+	public void registrarRepeticiones() {
+		shulkerRespawn shulkerRespawn1 = new shulkerRespawn(this, 200);
+		shulkerRespawn1.repetidor();
 	}
 	
 	

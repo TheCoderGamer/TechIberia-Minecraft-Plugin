@@ -17,4 +17,7 @@ commands:
    rango:
       description: Comando para rangos
       usage: /rango <set/remove/list> <jugador>
+   test:
+      description: test
+      usage: test
 

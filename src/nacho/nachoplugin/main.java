@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import nacho.nachoplugin.comandos.comandoDiscord;
 import nacho.nachoplugin.comandos.comandoPrincipal;
 import nacho.nachoplugin.comandos.comandoRango;
-import nacho.nachoplugin.comandos.comandoTest;
 import nacho.nachoplugin.comandos.comandoWeb;
 import nacho.nachoplugin.eventos.chat;
 import nacho.nachoplugin.eventos.entrar;
@@ -51,7 +50,7 @@ public class main extends JavaPlugin{
 		this.getCommand("discord").setExecutor(new comandoDiscord(this));
 		this.getCommand("tech").setExecutor(new comandoPrincipal(this));
 		this.getCommand("rango").setExecutor(new comandoRango(this));
-		this.getCommand("test").setExecutor(new comandoTest(this));
+		//this.getCommand("test").setExecutor(new comandoTest(this));
 	}
 	
 	public void registrarEventos() {
@@ -71,7 +70,7 @@ public class main extends JavaPlugin{
 	
 	
 	public void registrarRepeticiones() {
-		shulkerRespawn shulkerRespawn1 = new shulkerRespawn(this, 200);
+		shulkerRespawn shulkerRespawn1 = new shulkerRespawn(this, 600);
 		shulkerRespawn1.repetidor();
 	}
 	

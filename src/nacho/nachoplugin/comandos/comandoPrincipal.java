@@ -38,7 +38,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
             Bukkit.getServer().getOnlinePlayers().toArray(players);
             
             // Recalcular permisos todos los jugadores online
-            for (int i = 0; i < players.length; i++){
+            /*for (int i = 0; i < players.length; i++){
             	// Server:OP  Plugin:OP  Resultado:OP
             	if(players[i].isOp() == true && OPPlayers.contains(players[i].getName())) {
 					if (OPPlayers.contains(players[i].getName())) {
@@ -89,14 +89,14 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
             	else {
             		Bukkit.getConsoleSender().sendMessage(plugin.nombre + ChatColor.RED + "Error con permisos jugador " + players[i].getName());
             	}
-			}		
+			}*/		
 			plugin.saveConfig();
 			plugin.reloadConfig();
 			Bukkit.getConsoleSender().sendMessage(plugin.nombre + ChatColor.BLUE + "Plugin recargado exitosamente");
 			return true;
 		}
 		// Si la consola pone un comando
-		else if(!(sender instanceof Player)) {
+		/*else*/ if(!(sender instanceof Player)) {
 			Bukkit.getConsoleSender().sendMessage(ChatColor.WHITE + plugin.nombre + " Consola no puede ejecutar este comando");
 			return false;
 		}
@@ -135,7 +135,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 					Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
 		            Bukkit.getServer().getOnlinePlayers().toArray(players);
 					
-					// Recalcular permisos todos los jugadores online
+					/*// Recalcular permisos todos los jugadores online
 		            for (int i = 0; i < players.length; i++){
 		            	// Server:OP  Plugin:OP  Resultado:OP
 		            	if(players[i].isOp() == true && OPPlayers.contains(players[i].getName())) {
@@ -188,7 +188,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 		            		jugador.sendMessage(plugin.nombre + ChatColor.RED + "Error con permisos jugador " + players[i].getName());
 		            	}
 					
-		            }
+		            }*/
 					plugin.saveConfig();
 					plugin.reloadConfig();
 					jugador.sendMessage(plugin.nombre + ChatColor.BLUE + "Plugin recargado exitosamente");

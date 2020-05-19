@@ -49,20 +49,20 @@ public class entrar implements Listener{
 		List<String> donadoresPlayers = (ArrayList<String>) config.getStringList("donadoresPlayers");
 		if(donadoresPlayers.contains(jugador.getName())) {
 			playerIsDonador = true;
-			jugador.setOp(false);
+			//jugador.setOp(false);
 		}else {
 			playerIsDonador = false;
-			jugador.setOp(false);
+			//jugador.setOp(false);
 		}
 		
 		// Comprobar si es miembro
 		List<String> miembrosPlayers = (ArrayList<String>) config.getStringList("miembrosPlayers");
 		if(miembrosPlayers.contains(jugador.getName())) {
 			playerIsMiembro = true;
-			jugador.setOp(false);
+			//jugador.setOp(false);
 		}else {
 			playerIsMiembro = false;
-			jugador.setOp(false);
+			//jugador.setOp(false);
 		}
 		
 		

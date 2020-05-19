@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -86,6 +85,7 @@ import nacho.nachoplugin.main;
 		        return;
    
 		    // Si llega hasta aqui esque el jugador esta cerca de una endCity (a "chunkRadius" chunks de una endcity) 
+		    
 		    List<Location> purpurblocks = obtenerListaBloquesSpawneo(structure.getChunk());
 				
 			Random random = new Random();
@@ -117,7 +117,7 @@ import nacho.nachoplugin.main;
 						if (rand2 < cantidadPorTanda+1) {
 							// Spawn shulker
 							players[i].getWorld().spawnEntity(purpurblocks.get(p), EntityType.SHULKER);
-							players[i].sendMessage(ChatColor.RED + "Shulker spawn X:" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());
+							//players[i].sendMessage(ChatColor.RED + "Shulker spawn X:" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());
 							rand2 = rand2+1;
 						}
 					}
@@ -139,13 +139,13 @@ import nacho.nachoplugin.main;
 		            for (int y = 0; y <= maxY; ++y) {
 		                for (int z = 0; z < 16; ++z) {
 		                	// Comprueba si es del material correcto
-		                	if(chunk.getBlock(x, y, z).getType() == Material.PURPUR_BLOCK) {
+		                	if(chunk.getBlock(x, y, z).getType() == Material.PURPUR_BLOCK || chunk.getBlock(x, y, z).getType() == Material.DIRT) {
 		                		// Comprueba si ya esta el bloque
 		                		if(!(purpurBlocks.contains(chunk.getBlock(x, y, z).getLocation()))) {
 		                			// Comprueba si encima hay un bloque de aire
-		                			if(chunk.getBlock(x, y+1, z).getType() == Material.AIR) {
+		                			if(chunk.getBlock(x, y+1, z).getType() == Material.AIR || chunk.getBlock(x, y+1, z).getType() == Material.WITHER_ROSE) {
 		                				// Comprueba si hay 2 bloques de aire en total
-		                				if(chunk.getBlock(x, y+2, z).getType() == Material.AIR) {
+		                				if(chunk.getBlock(x, y+2, z).getType() == Material.AIR || chunk.getBlock(x, y+2, z).getType() == Material.TRIPWIRE) {
 		                					// Añade el bloque de encima del bloque elegido
 			                				purpurBlocks.add(chunk.getBlock(x, y+1, z).getLocation());
 		                				}

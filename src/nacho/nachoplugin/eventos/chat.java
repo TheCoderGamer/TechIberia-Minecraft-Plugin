@@ -46,7 +46,7 @@ public class chat implements Listener{
 		// Comprobar si es donador
 		List<String> donadoresPlayers = (ArrayList<String>) config.getStringList("donadoresPlayers");
 		if(donadoresPlayers.contains(nombreJugador)) {
-					playerIsDonador = true;
+			playerIsDonador = true;
 		}else {
 			playerIsDonador = false;
 		}

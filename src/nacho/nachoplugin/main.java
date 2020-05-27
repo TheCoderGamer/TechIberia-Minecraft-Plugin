@@ -20,12 +20,12 @@ import nacho.nachoplugin.mecanicas.shulkerRespawn;
 public class main extends JavaPlugin{
 	PluginDescriptionFile pdffile = getDescription();
 	public String version = pdffile.getVersion();
-	public String nombre = ChatColor.YELLOW + "[" + ChatColor.BLUE + pdffile.getName() + ChatColor.YELLOW + "] ";
+	public String nombre = ChatColor.YELLOW + "[" + ChatColor.BLUE + "TI" + ChatColor.YELLOW + "] ";
 	public String rutaConfig;
 	
 	public void onEnable() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "<----------------------------->");
-		Bukkit.getConsoleSender().sendMessage(nombre + ChatColor.GREEN + "ha sido activado" + ChatColor.DARK_GREEN +"(v " + version + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[" + ChatColor.BLUE + "TechIberia" + ChatColor.YELLOW + "]" + ChatColor.GREEN + "ha sido activado" + ChatColor.DARK_GREEN +"(v " + version + ")");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "<----------------------------->");
 		registrarComandos();
 		registrarEventos();
@@ -41,7 +41,7 @@ public class main extends JavaPlugin{
 	
 	public void onDisable() {
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "<----------------------------->");
-		Bukkit.getConsoleSender().sendMessage(nombre + ChatColor.GREEN + "ha sido desactivado" + ChatColor.DARK_GREEN +"(v " + version + ")");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[" + ChatColor.BLUE + "TechIberia" + ChatColor.YELLOW + "]" + ChatColor.GREEN + "ha sido desactivado" + ChatColor.DARK_GREEN +"(v " + version + ")");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "<----------------------------->");
 	}
 	
@@ -70,8 +70,10 @@ public class main extends JavaPlugin{
 	
 	
 	public void registrarRepeticiones() {
-		shulkerRespawn shulkerRespawn1 = new shulkerRespawn(this, 600);
-		shulkerRespawn1.repetidor();
+		if(getConfig().getBoolean("config.mecanicas.active")) {
+			shulkerRespawn shulkerRespawn1 = new shulkerRespawn(this, getConfig().getInt("config.mecanicas.rate"));
+			shulkerRespawn1.repetidor();
+		}
 	}
 	
 	

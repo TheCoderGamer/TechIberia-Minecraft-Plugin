@@ -9,6 +9,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.StructureType;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,7 +32,6 @@ import nacho.nachoplugin.main;
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
 		
-		//private Random random = new Random();
 		
 		
 		public void repetidor() {
@@ -50,11 +50,11 @@ import nacho.nachoplugin.main;
 	
 	
 	private void shulkerRespawner() {
-		//int rand50 = random.nextInt(50);
-		
+		FileConfiguration config = plugin.getConfig();
 		
 			
 		int radius = 100; // Radio de busqueda de EndCity alrededor del jugador
+		radius = config.getInt("config.mecanicas.chunkRadio");
 		int chunkRadius = 5; // Radio de chunks en los que se comprueba si estas cerca de endCity 
 	
         Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
@@ -89,19 +89,27 @@ import nacho.nachoplugin.main;
 		    List<Location> purpurblocks = obtenerListaBloquesSpawneo(structure.getChunk());
 				
 			Random random = new Random();
-			int rand2 = random.nextInt(10);
+			
 			int cantidadPorTanda = 5;
+			cantidadPorTanda = config.getInt("config.mecanicas.cantidadMaxPorTanda");
+			int probabilidadBloqueValido = 10;
+			probabilidadBloqueValido = config.getInt("config.mecanicas.probabilidadBloqueValido");
+			
+			int randTanda = random.nextInt(cantidadPorTanda);
 			
 			for(int p=0;p<purpurblocks.size(); p++) {
 				//players[i].sendMessage(ChatColor.GREEN + "Posible spawn shulker: X" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());			
 				
-				int rand = random.nextInt(cantidadPorTanda);
+				int randValido = random.nextInt(probabilidadBloqueValido);
 				
 				// 1 entre 10 de que aparezca shulker
-				if(rand == 0) {
+				if(randValido == 0) {
+					// Calcular numero para elejir un bloque aleatorio
+					int randBlockAElegir = random.nextInt(purpurblocks.size());
+					
 					boolean shulkerCerca = false;
 					List<Entity> entidadesCerca = new ArrayList<Entity>();
-					entidadesCerca = (List<Entity>) structure.getWorld().getNearbyEntities(purpurblocks.get(p), 2, 2, 2);
+					entidadesCerca = (List<Entity>) structure.getWorld().getNearbyEntities(purpurblocks.get(randBlockAElegir), 2, 2, 2);
 					
 					// Comprobar si hay mas entidades cerca
 					if(entidadesCerca.isEmpty() == false) {
@@ -114,11 +122,11 @@ import nacho.nachoplugin.main;
 					}
 					if (shulkerCerca == false) {
 						// Spawnear shulkers de poco en poco (de 1 a 10 por tanda)
-						if (rand2 < cantidadPorTanda+1) {
+						if (randTanda < cantidadPorTanda+1) {							
 							// Spawn shulker
-							players[i].getWorld().spawnEntity(purpurblocks.get(p), EntityType.SHULKER);
+							players[i].getWorld().spawnEntity(purpurblocks.get(randBlockAElegir), EntityType.SHULKER);
 							//players[i].sendMessage(ChatColor.RED + "Shulker spawn X:" + purpurblocks.get(p).getBlockX() + " Y:" + purpurblocks.get(p).getBlockY()+ " Z:" + purpurblocks.get(p).getBlockZ());
-							rand2 = rand2+1;
+							randTanda = randTanda+1;
 						}
 					}
 					else {

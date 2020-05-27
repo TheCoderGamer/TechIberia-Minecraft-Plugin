@@ -121,10 +121,22 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 					return true;
 				}
 				// -----------------------------------------------------------------------------------
+				else if(args[0].equalsIgnoreCase("shulkerInfo")) {
+					jugador.sendMessage(plugin.nombre + ChatColor.DARK_GREEN + "-----------");
+					jugador.sendMessage(plugin.nombre + ChatColor.DARK_RED + "Shulker Respawn: " + ChatColor.LIGHT_PURPLE + config.getBoolean("config.mecanicas.active"));
+					jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rate: " + ChatColor.LIGHT_PURPLE + config.getInt("config.mecanicas.rate"));
+					jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Cantidad maxima por tanda: " + ChatColor.LIGHT_PURPLE + config.getInt("config.mecanicas.cantidadMaxPorTanda"));
+					jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Probabilidad bloque valido: " + ChatColor.LIGHT_PURPLE + config.getInt("config.mecanicas.probabilidadBloqueValido"));
+					jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Radio de activacion: " + ChatColor.LIGHT_PURPLE + config.getInt("config.mecanicas.chunkRadio"));
+					jugador.sendMessage(plugin.nombre + ChatColor.DARK_GREEN + "-----------");
+					return true;
+				}
+				// -----------------------------------------------------------------------------------
 				else if (args[0].equalsIgnoreCase("help")) {
 					jugador.sendMessage(plugin.nombre + ChatColor.LIGHT_PURPLE + "-----------");
 					jugador.sendMessage(plugin.nombre + ChatColor.DARK_PURPLE + "/tech version" + ChatColor.LIGHT_PURPLE + " - Muestra la version del plugin");
 					jugador.sendMessage(plugin.nombre + ChatColor.DARK_PURPLE + "/tech info" + ChatColor.LIGHT_PURPLE + " - Muestra informacion del plugin");
+					jugador.sendMessage(plugin.nombre + ChatColor.DARK_PURPLE + "/tech shulkerInfo" + ChatColor.LIGHT_PURPLE + " - Muestra informacion de respawn de shulkers");
 					jugador.sendMessage(plugin.nombre + ChatColor.DARK_RED + "/tech reload" + ChatColor.LIGHT_PURPLE + " - Recarga el plugin");
 					jugador.sendMessage(plugin.nombre + ChatColor.LIGHT_PURPLE + "-----------");
 					return true;
@@ -243,6 +255,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
             arguments1.add("info");
             arguments1.add("version");
             arguments1.add("help");
+            arguments1.add("shulkerInfo");
             if (sender.isOp() == true) {
             	arguments1.add("fakekill");
             }

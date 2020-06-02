@@ -29,6 +29,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 	public boolean onCommand(CommandSender sender, Command comando, String label, String[] args) {
 		FileConfiguration config = plugin.getConfig();
 		List<String> OPPlayers = (ArrayList<String>) config.getStringList("OPplayers");
+		List<String> adminsPlayers = (ArrayList<String>) config.getStringList("adminsPlayers");
 		
 		// Comando reload se puede ejecutar desde la consola
 		if (!(sender instanceof Player) && args[0].equalsIgnoreCase("reload")) {
@@ -106,7 +107,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 			Player jugador = (Player) sender;
 			String nombreJugador = jugador.getName();
 			
-			if(OPPlayers.contains(nombreJugador)) {
+			if(OPPlayers.contains(nombreJugador) || adminsPlayers.contains(nombreJugador)) {
 				playerIsOp = true;
 			}
 			else {
@@ -201,6 +202,7 @@ public class comandoPrincipal implements CommandExecutor,TabExecutor{
 		            	}
 					
 		            }*/
+		            plugin.registrarRepeticiones();
 					plugin.saveConfig();
 					plugin.reloadConfig();
 					jugador.sendMessage(plugin.nombre + ChatColor.BLUE + "Plugin recargado exitosamente");

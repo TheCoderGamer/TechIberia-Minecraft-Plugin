@@ -84,7 +84,7 @@ import nacho.nachoplugin.main;
 		    if ((Math.abs(structure.getChunk().getZ() - location.getChunk().getZ()) > chunkRadius))
 		        return;
    
-		    // Si llega hasta aqui esque el jugador esta cerca de una endCity (a "chunkRadius" chunks de una endcity) 
+		    // Si llega hasta aqui es que el jugador esta cerca de una endCity (a "chunkRadius" chunks de una endcity) 
 		    
 		    List<Location> purpurblocks = obtenerListaBloquesSpawneo(structure.getChunk());
 				

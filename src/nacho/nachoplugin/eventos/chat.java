@@ -17,6 +17,7 @@ public class chat implements Listener{
 	boolean playerIsOP;
 	boolean playerIsDonador;
 	boolean playerIsMiembro;
+	boolean playerIsAdmin;
 	
 	// Esto sirve para importar variables de otra clase
 			private main plugin;
@@ -30,7 +31,8 @@ public class chat implements Listener{
 	public void modificarChat(AsyncPlayerChatEvent event){
 		
 		Player jugador = event.getPlayer();
-		String message = event.getMessage();
+		String message = "";
+		message = event.getMessage();
 		
 		// Asigna el archivo de configuracion
 		FileConfiguration config = plugin.getConfig();
@@ -58,21 +60,69 @@ public class chat implements Listener{
 			playerIsMiembro = false;
 		}
 		
+		// Comprobar si es admin
+		List<String> adminsPlayers = (ArrayList<String>) config.getStringList("adminsPlayers");
+		if(adminsPlayers.contains(jugador.getName())) {
+			playerIsAdmin = true;
+				//jugador.setOp(true);
+		}else {
+			playerIsAdmin = false;
+				//jugador.setOp(true);
+		}
+				
+		
+		
+		
+
 		
 		if (playerIsOP == true) {
-			event.setMessage(message);
+			if (message.toLowerCase().contains(String.valueOf("&"))) {
+				
+				message = (ChatColor.translateAlternateColorCodes('&', message));
+			}
+			else {
+				event.setMessage(message);
+			}
 			event.setFormat(ChatColor.DARK_RED + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
 		}
 		else if (playerIsDonador) {
-			event.setMessage(message);
+			if (message.toLowerCase().contains(String.valueOf("&"))) {
+				
+				message = (ChatColor.translateAlternateColorCodes('&', message));
+			}
+			else {
+				event.setMessage(message);
+			}
 			event.setFormat(ChatColor.AQUA + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
 		}
 		else if (playerIsMiembro) {
-			event.setMessage(message);
+			if (message.toLowerCase().contains(String.valueOf("&"))) {
+				
+				message = (ChatColor.translateAlternateColorCodes('&', message));
+			}
+			else {
+				event.setMessage(message);
+			}
 			event.setFormat(ChatColor.GREEN + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
 		}
+		else if (playerIsAdmin) {
+			if (message.toLowerCase().contains(String.valueOf("&"))) {
+				
+				message = (ChatColor.translateAlternateColorCodes('&', message));
+			}
+			else {
+				event.setMessage(message);
+			}
+			event.setFormat(ChatColor.GOLD + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
+		}
 		else {
-			event.setMessage(message);
+			if (message.toLowerCase().contains(String.valueOf("&"))) {
+				
+				message = (ChatColor.translateAlternateColorCodes('&', message));
+			}
+			else {
+				event.setMessage(message);
+			}
 			event.setFormat(ChatColor.GRAY + jugador.getName() + ChatColor.DARK_GRAY+" >>> " + ChatColor.GRAY+message);
 		}		
 	}

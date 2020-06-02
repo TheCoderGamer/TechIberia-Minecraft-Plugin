@@ -20,6 +20,7 @@ config:
     mensaje-bienvenida-texto-OP: "&7&lHola &c&l%player%, &7&lbienvenido a &4&lTechIberia"
     mensaje-bienvenida-texto-donador: "&7&lHola &b&l%player%, &7&lbienvenido a &4&lTechIberia"
     mensaje-bienvenida-texto-miembro: "&7&lHola &2&l%player%, &7&lbienvenido a &4&lTechIberia"
+    mensaje-bienvenida-texto-admin: "&7&lHola &6&l%player%, &7&lbienvenido a &4&lTechIberia"
     
     mecanicas:
        active: true
@@ -51,6 +52,8 @@ donadoresPlayers:
     - Saawel
     
 miembrosPlayers:
+
+adminsPlayers:
     
    
     

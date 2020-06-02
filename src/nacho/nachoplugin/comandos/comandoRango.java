@@ -25,8 +25,11 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 	boolean playerIsOP;
 	
 	
+	
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command comando, String label, String[] args) {
+		
 		
 		if(!(sender instanceof Player)) {
 			Bukkit.getConsoleSender().sendMessage(plugin.nombre + ChatColor.RED + "La consola no puede ejecutar este comando");
@@ -35,9 +38,12 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 			Player jugador = (Player) sender;
 			FileConfiguration config = plugin.getConfig();
 			
-			// Comprobar si es OP
+			// Cargar OP
 			List<String> OPPlayers = (ArrayList<String>) config.getStringList("OPplayers");
-			if(OPPlayers.contains(jugador.getName())) {
+			// Cargar admins
+			List<String> adminsPlayers = (ArrayList<String>) config.getStringList("adminsPlayers");
+			
+			if(OPPlayers.contains(jugador.getName()) || adminsPlayers.contains(jugador.getName())) {
 				playerIsOP = true;
 			}else {
 				playerIsOP = false;
@@ -46,6 +52,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 			List<String> donadoresPlayers = (ArrayList<String>) config.getStringList("donadoresPlayers");
 			// Cargar miembros
 			List<String> miembrosPlayers = (ArrayList<String>) config.getStringList("miembrosPlayers");
+			
 
 			if(args.length > 0 && playerIsOP == true) {
 				// ------------------------------------------------------------------------------------------------
@@ -58,12 +65,34 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 									OPPlayers.add(args[2]);
 									config.set("OPplayers",OPPlayers );
 									plugin.saveConfig();
-									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango OP dado correctamente");
+									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.RED + " OP " + ChatColor.GREEN + "dado correctamente");
 									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 									return true;
 								}
 								else {
 									jugador.sendMessage(plugin.nombre + ChatColor.RED + "El jugador " + args[2] + " ya tiene rango OP");
+									return true;
+								}
+							}
+							else {
+								jugador.sendMessage(plugin.nombre + ChatColor.RED + "Falta jugador");
+								return false;
+							}
+						}
+						// ------------------------------------------------------------------------------------------------
+						else if(args[1].equalsIgnoreCase("admin")) {
+							if(args.length > 2) {
+								if(!(adminsPlayers.contains(args[2]))) {
+									// Añadir jugador a admins
+									adminsPlayers.add(args[2]);
+									config.set("adminsPlayers",adminsPlayers );
+									plugin.saveConfig();									
+									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.GOLD + " admin " + ChatColor.GREEN + "dado correctamente");
+									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
+									return true;
+								}
+								else {
+									jugador.sendMessage(plugin.nombre + ChatColor.RED + "El jugador " + args[2] + " ya tiene rango admin");
 									return true;
 								}
 							}
@@ -80,7 +109,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 									donadoresPlayers.add(args[2]);
 									config.set("donadoresPlayers",donadoresPlayers );
 									plugin.saveConfig();
-									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango donador dado correctamente");
+									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.AQUA + " donador " + ChatColor.GREEN + "dado correctamente");
 									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 									return true;
 								}
@@ -102,7 +131,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 									miembrosPlayers.add(args[2]);
 									config.set("miembrosPlayers",miembrosPlayers );
 									plugin.saveConfig();
-									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango miembro dado correctamente");
+									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.DARK_GREEN + " miembro " + ChatColor.GREEN + "dado correctamente");
 									jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 									return true;
 								}
@@ -118,7 +147,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 						}
 						else {
 							jugador.sendMessage(plugin.nombre + ChatColor.RED + "Rango no reconocido");
-							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/donador/miembro");
+							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/admin/donador/miembro");
 							return false;
 						}
 					}
@@ -136,7 +165,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 								OPPlayers.remove(args[2]);
 								config.set("OPplayers",OPPlayers );
 								plugin.saveConfig();
-								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango OP quitado correctamente");
+								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.RED + " OP " + ChatColor.GREEN + "quitado correctamente");
 								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 								return true;
 							}
@@ -146,13 +175,29 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 							}
 						}
 						// ------------------------------------------------------------------------------------------------
+						else if(args[1].equalsIgnoreCase("admin")) {
+							if(args.length > 2) {
+								// Quitar jugador de admin
+								adminsPlayers.remove(args[2]);
+								config.set("adminsPlayers",adminsPlayers );
+								plugin.saveConfig();
+								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.GOLD + " admin " + ChatColor.GREEN + "quitado correctamente");
+								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
+								return true;
+							}
+							else {
+								jugador.sendMessage(plugin.nombre + ChatColor.RED + "Falta jugador");
+								return false;
+							}	
+						}
+						// ------------------------------------------------------------------------------------------------
 						else if(args[1].equalsIgnoreCase("donador")) {
 							if(args.length > 2) {
 								// Quitar jugador de donador
 								donadoresPlayers.remove(args[2]);
 								config.set("donadoresPlayers",donadoresPlayers );
 								plugin.saveConfig();
-								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango donador quitado correctamente");
+								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.AQUA + " donador " + ChatColor.GREEN + "quitado correctamente");
 								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 								return true;
 							}
@@ -168,7 +213,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 								miembrosPlayers.remove(args[2]);
 								config.set("miembrosPlayers",miembrosPlayers );
 								plugin.saveConfig();
-								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango miembro quitado correctamente");
+								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Rango" + ChatColor.DARK_GREEN + " miembro " + ChatColor.GREEN + "quitado correctamente");
 								jugador.sendMessage(plugin.nombre + ChatColor.GREEN + "Ejecuta /tech reload para aplicar cambios");
 								return true;
 							}
@@ -179,7 +224,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 						}
 						else {
 							jugador.sendMessage(plugin.nombre + ChatColor.RED + "Rango no reconocido");
-							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/donador/miembro");
+							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/admin/donador/miembro");
 							return false;
 						}
 					}
@@ -198,6 +243,16 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 								jugador.sendMessage(plugin.nombre + ChatColor.RED + OPPlayers.get(i));
 							}
 							jugador.sendMessage(plugin.nombre + ChatColor.LIGHT_PURPLE + "------------");
+							return true;
+						}
+						// ------------------------------------------------------------------------------------------------
+						else if(args[1].equalsIgnoreCase("admin")) {
+							// Mostrar jugadores admin
+							jugador.sendMessage(plugin.nombre + ChatColor.LIGHT_PURPLE + "-------ADMINS------");
+							for(int i=0;i<adminsPlayers.size(); i++) {
+								jugador.sendMessage(plugin.nombre + ChatColor.GOLD + adminsPlayers.get(i));
+							}
+							jugador.sendMessage(plugin.nombre + ChatColor.LIGHT_PURPLE + "-------------------");
 							return true;
 						}
 						// ------------------------------------------------------------------------------------------------
@@ -222,7 +277,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
 						}
 						else {
 							jugador.sendMessage(plugin.nombre + ChatColor.RED + "Rango no reconocido");
-							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/donador/miembro");
+							jugador.sendMessage(plugin.nombre + ChatColor.RED	+ "Rangos disponibles op/admin/donador/miembro");
 							return false;
 						}
 					}
@@ -275,6 +330,7 @@ public class comandoRango implements CommandExecutor,TabExecutor{
         else if (args.length == 2){
             List<String> arguments2 = new ArrayList<>();
             arguments2.add("op");
+            arguments2.add("admin");
             arguments2.add("donador");
             arguments2.add("miembro");
  

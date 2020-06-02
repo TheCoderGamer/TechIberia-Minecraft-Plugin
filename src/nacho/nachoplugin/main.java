@@ -75,6 +75,4 @@ public class main extends JavaPlugin{
 			shulkerRespawn1.repetidor();
 		}
 	}
-	
-	
 }

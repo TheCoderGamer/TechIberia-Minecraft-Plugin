@@ -23,6 +23,7 @@ public class entrar implements Listener{
 	}
 		
 	boolean playerIsOp;
+	boolean playerIsAdmin;
 	boolean playerIsDonador;
 	boolean playerIsMiembro;
 	
@@ -65,6 +66,15 @@ public class entrar implements Listener{
 			//jugador.setOp(false);
 		}
 		
+		// Comprobar si es admin
+		List<String> adminsPlayers = (ArrayList<String>) config.getStringList("adminsPlayers");
+		if(adminsPlayers.contains(jugador.getName())) {
+			playerIsAdmin = true;
+			//jugador.setOp(true);
+		}else {
+			playerIsAdmin = false;
+			//jugador.setOp(true);
+		}
 		
 		
 		
@@ -73,6 +83,7 @@ public class entrar implements Listener{
 		if(showMensajeBienvenida == true) {
 			String texto = "config.mensaje-bienvenida-texto";
 			String textoOP = "config.mensaje-bienvenida-texto-OP";
+			String textoAdmin = "config.mensaje-bienvenida-texto-admin";
 			String textoDonador = "config.mensaje-bienvenida-texto-donador";
 			String textoMiembro = "config.mensaje-bienvenida-texto-miembro";
 			
@@ -84,6 +95,9 @@ public class entrar implements Listener{
 			}
 			else if (playerIsMiembro == true) {
 				event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', config.getString(textoMiembro).replaceAll("%player%", jugador.getName())));
+			}
+			else if (playerIsAdmin == true) {
+				event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', config.getString(textoAdmin).replaceAll("%player%", jugador.getName())));
 			}
 			else {
 				event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', config.getString(texto).replaceAll("%player%", jugador.getName())));

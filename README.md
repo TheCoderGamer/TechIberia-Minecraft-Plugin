@@ -25,6 +25,7 @@ Para probar y editar el proyecto sigue las instrucciones detalladas mas abajo
 ## Contributing
 
 Si quieres contribuir, deja una pull request y si los cambios nos parecieran correctos, la aceptaremos
+
 Tambien si quieres apoyar al servidor, puedes hacerlo desde el link de fondo de PayPal del servidor de discord del server
 * [Discord]( https://discord.gg/f8jk9SU) - El servidor de discord de TechIberiaSMP
 

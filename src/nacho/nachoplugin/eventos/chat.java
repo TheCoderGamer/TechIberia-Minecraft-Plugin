@@ -77,8 +77,11 @@ public class chat implements Listener{
 		
 		if (playerIsOP == true) {
 			if (message.toLowerCase().contains(String.valueOf("&"))) {
-				
+				if (message.toLowerCase().contains(String.valueOf(":v"))) {
+					message = (":)");
+				}else {
 				message = (ChatColor.translateAlternateColorCodes('&', message));
+				}
 			}
 			else {
 				event.setMessage(message);
@@ -87,8 +90,11 @@ public class chat implements Listener{
 		}
 		else if (playerIsDonador) {
 			if (message.toLowerCase().contains(String.valueOf("&"))) {
-				
+				if (message.toLowerCase().contains(String.valueOf(":v"))) {
+					message = (":)");
+				}else {
 				message = (ChatColor.translateAlternateColorCodes('&', message));
+				}
 			}
 			else {
 				event.setMessage(message);
@@ -97,8 +103,11 @@ public class chat implements Listener{
 		}
 		else if (playerIsMiembro) {
 			if (message.toLowerCase().contains(String.valueOf("&"))) {
-				
+				if (message.toLowerCase().contains(String.valueOf(":v"))) {
+					message = (":)");
+				}else {
 				message = (ChatColor.translateAlternateColorCodes('&', message));
+				}
 			}
 			else {
 				event.setMessage(message);
@@ -107,8 +116,11 @@ public class chat implements Listener{
 		}
 		else if (playerIsAdmin) {
 			if (message.toLowerCase().contains(String.valueOf("&"))) {
-				
+				if (message.toLowerCase().contains(String.valueOf(":v"))) {
+					message = (":)");
+				}else {
 				message = (ChatColor.translateAlternateColorCodes('&', message));
+				}
 			}
 			else {
 				event.setMessage(message);
@@ -117,8 +129,11 @@ public class chat implements Listener{
 		}
 		else {
 			if (message.toLowerCase().contains(String.valueOf("&"))) {
-				
+				if (message.toLowerCase().contains(String.valueOf(":v"))) {
+					message = (":)");
+				}else {
 				message = (ChatColor.translateAlternateColorCodes('&', message));
+				}
 			}
 			else {
 				event.setMessage(message);

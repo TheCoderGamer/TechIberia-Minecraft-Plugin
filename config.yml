@@ -13,10 +13,11 @@
 # OPplayers -> Lista en la que estan los jugadores con permisos especiales
 # donadoresPlayers -> Lista en la que estan los donadores
 # miembrosPlayers -> Lista en la que estan los miembros
+# adminsPlayers -> Lista en la que estan los admins
 #
 config:
     mensaje-bienvenida: true
-    mensaje-bienvenida-texto: "&7&lHola &6&l%player%, &7&lbienvenido a &4&lTechIberia"
+    mensaje-bienvenida-texto: "&7&lHola &8&l%player%, &7&lbienvenido a &4&lTechIberia"
     mensaje-bienvenida-texto-OP: "&7&lHola &c&l%player%, &7&lbienvenido a &4&lTechIberia"
     mensaje-bienvenida-texto-donador: "&7&lHola &b&l%player%, &7&lbienvenido a &4&lTechIberia"
     mensaje-bienvenida-texto-miembro: "&7&lHola &2&l%player%, &7&lbienvenido a &4&lTechIberia"
@@ -45,11 +46,8 @@ Scoreboard:
 
 
 OPplayers:
-    - Nachogamer1000
-    - Misk0_Jones
     
 donadoresPlayers:
-    - Saawel
     
 miembrosPlayers:
 
